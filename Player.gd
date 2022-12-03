@@ -34,16 +34,18 @@ func _physics_process(delta):
 	if direction != Vector3.ZERO:
 		direction = direction.normalized();
 		$Pivot.look_at(translation + direction, Vector3.UP)
+		$AnimationPlayer.playback_speed = 4
+	else:
+		$AnimationPlayer.playback_speed = 1
 	
 	velocity.x = direction.x * speed
 	velocity.z = direction.z * speed
-	
-	velocity.y -= fall_acceleration * delta
 	
 	# Jumping.
 	if is_on_floor() and Input.is_action_just_pressed("jump"):
 		velocity.y += jump_impulse
 	
+	velocity.y -= fall_acceleration * delta
 	velocity = move_and_slide(velocity, Vector3.UP)
 	
 	for index in range(get_slide_count()):
@@ -58,6 +60,7 @@ func _physics_process(delta):
 				mob.squash()
 				velocity.y = bounce_impulse
 
+	$Pivot.rotation.x = PI / 6 * velocity.y / jump_impulse
 
 func _on_MobDetector_body_entered(body):
 	die()

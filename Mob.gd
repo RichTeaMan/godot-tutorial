@@ -27,10 +27,11 @@ func initialize(start_position: Vector3, player_position: Vector3):
 	
 	# rotate based upon mob's angle
 	velocity = velocity.rotated(Vector3.UP, rotation.y)
+	
+	$AnimationPlayer.playback_speed = random_speed / min_speed
 
 func _physics_process(delta):
 	move_and_slide(velocity)
-
 
 func _on_VisibilityNotifier_screen_exited():
 	queue_free()
